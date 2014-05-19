@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<body>
+	<ui:composition>
+			 <p:focus for="checkBtn"/>
+			<div id="togglerCheck" class="text-center">
+						<p:fieldset id="checkForm" styleClass="myCheck"
+							style="width: 280px; background: #FFF;" legend="Check your bookings"
+							toggleable="true" toggleSpeed="500" collapsed="true">
+			<p:inputMask id="inPassport" value="#{customerBean.passport}"   mask="aa999999" validatorMessage="Enter passport info!">
+				<p:ajax update="checkBtn" event="keyup" listener="#{customerBean.enableCheckButton}" />
+			</p:inputMask><br/>
+			<p:watermark for="inPassport" value="Passport #" />
+			<p:inputMask id="inPhone" value="#{customerBean.phone}" mask="+99 999 999-9999"   validatorMessage="Enter phone number!">
+				<p:ajax update="checkBtn" event="keyup" listener="#{customerBean.enableCheckButton}" />
+			</p:inputMask> <br/>
+			<p:watermark for="inPhone" value="Phone #" />
+			<p:commandButton  id="checkBtn" value="Check" actionListener="#{customerBean.findExactCustomer}" action="#{customerBean.goToCustomerBookings}" 
+			icon="ui-icon-info" update=":buttonForm:messages" disabled="#{customerBean.disableCheckButton}">			 
+		 		<f:setPropertyActionListener target="#{ticketBean.customer}" value="#{customerBean.selectedCustomer}"  />			
+			</p:commandButton>	
+			<p:defaultCommand target="checkBtn"/>	 
+		 	<p:messages id="messages" showDetail="true" closable="true"
+								escape="false" />
+						</p:fieldset>
+					</div>
+	</ui:composition>
+</body>
+</html>

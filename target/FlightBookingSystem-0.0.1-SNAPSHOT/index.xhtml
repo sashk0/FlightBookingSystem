@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Flight booking system | Index page</title>
+
+</h:head>
+<h:body>
+
+	<ui:composition template="templates/BasicTemplate.xhtml">
+		<ui:define name="content">
+			<p:panel styleClass="text-center">				
+				<p:galleria  id="galleria" effect="fade" effectDuration="4000" effectSpeed="1000" panelWidth="800"  showFilmstrip="false">
+					<p:graphicImage value="#{resource['gallery:1.jpg']}" width="800"/>
+					<p:graphicImage value="#{resource['gallery:2.jpg']}" width="800"/>
+					<p:graphicImage value="#{resource['gallery:3.jpg']}" width="800"/>
+					<p:graphicImage value="#{resource['gallery:4.jpg']}" width="800"/>
+				</p:galleria>
+				<h:form id="buttonForm" >
+
+					<p:commandButton styleClass="firstButton" action="pages/Customer.xhtml"
+							value="Search for flights" icon="ui-icon-search"/> 					 
+							 <ui:include src="forms/bookingCheckForm.xhtml" style=""/> 
+				</h:form>
+			</p:panel>
+			 
+		</ui:define>
+	</ui:composition>
+
+
+</h:body>
+</html>

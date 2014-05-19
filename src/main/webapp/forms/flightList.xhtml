@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<body>
+	<ui:composition>
+
+		<p:panel styleClass="text-center">
+			<h:form id="formResult">
+				<p:selectBooleanButton value="#{flightBean.futureOnly}"
+					onLabel="Actual flights" offLabel="All flights"
+					onIcon="ui-icon-locked" offIcon="ui-icon-unlocked">
+					<p:ajax event="change" listener="#{flightBean.reset()}"
+						update=":formResult:tableResult" />
+				</p:selectBooleanButton>
+
+				<p:dataTable id="tableResult" value="#{flightBean.allFlights}"
+					editable="true" var="flight" scrollable="true" scrollHeight="400"
+					 
+					sortBy="#{flight.id}" sortOrder="descending">
+					<p:ajax event="rowEdit" listener="#{flightBean.onEdit}" />
+					<p:ajax event="rowEditCancel" listener="#{flightBean.onCancel}" />
+
+					<p:column headerText="Flight #" sortBy="#{flight.flightNumber}">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{flight.flightNumber}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{flight.flightNumber}" style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column headerText="From"
+						sortBy="#{flight.departureAirport.name}">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{flight.departureAirport.name}" />
+							</f:facet>
+							<f:facet name="input">
+								<h:outputText value="#{flight.departureAirport.name}" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column headerText="Departure time"
+						sortBy="#{flight.departureTime}">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{flight.departureTime}">
+									<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+								</h:outputText>
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{flight.departureTime}">
+									<f:convertDateTime type="date" pattern="dd.MM.yyyy HH:mm" />
+								</p:inputText>
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column headerText="To" sortBy="#{flight.arrivalAirport.name}">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{flight.arrivalAirport.name}" />
+							</f:facet>
+							<f:facet name="input">
+								<h:outputText value="#{flight.arrivalAirport.name}" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column headerText="Arrival time" sortBy="#{flight.arrivalTime}">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{flight.arrivalTime}">
+									<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+								</h:outputText>
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{flight.arrivalTime}">
+									<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+								</p:inputText>
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column headerText="Seats" sortBy="#{flight.seatsAvailable}">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value=" #{flight.seatsAvailable}">
+									<h:outputText value="#{flight.seatsAvailable}" />
+								</h:outputText>
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value=" #{flight.seatsAvailable}" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					 
+					<p:column headerText="Price" sortBy="#{flight.price}">
+						<p:cellEditor>
+							<f:facet name="output">
+								 
+									<h:outputText value="$#{flight.seatPrice}" />
+								 
+							</f:facet>
+							<f:facet name="input">
+								<h:outputText value="#{flight.seatPrice}" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column headerText="Status" sortBy="#{flight.cancelled}" styleClass="#{flight.cancelled=='Cancelled' ? 'cancelled' : ''}">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value=" #{flight.cancelled}">
+									<h:outputText value="#{flight.cancelled}" />
+								</h:outputText>
+							</f:facet>
+							<f:facet name="input">
+								<h:outputText value="#{flight.ticketsN}" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column width="60">
+
+						<p:commandButton icon="ui-icon-circle-close" id="cancelButton"
+							update=":formResult:tableResult"
+							style="display:#{flight.cancelled=='Cancelled' ? 'none': 'inline'}" onclick="PF('dlg').show()">
+							 
+							<f:setPropertyActionListener
+								target="#{flightBean.selectedFlight}" value="#{flight}" />
+						</p:commandButton>
+
+
+					</p:column>
+				</p:dataTable>
+				<p:confirmDialog header="Are you sure?"
+					message="You are about to cancel flight #{flightBean.selectedFlight}"
+					widgetVar="dlg" id="dlgConfirm" global="true" showEffect="fade"
+					hideEffect="explode">
+					<div class="text-center">
+						<p:commandButton value="Cancel" type="button"
+							styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+						<p:commandButton value="Ok" type="button"
+							styleClass="ui-confirmdialog-yes" icon="ui-icon-check">
+							<p:ajax event="click"
+								listener="#{flightBean.cancelSelectedFlight()}"
+								oncomplete="PF('dlg').hide()"
+								update=":formResult:tableResult" />
+						</p:commandButton>
+					</div>
+				</p:confirmDialog>
+			</h:form>
+		</p:panel>
+
+	</ui:composition>
+</body>
+</html>

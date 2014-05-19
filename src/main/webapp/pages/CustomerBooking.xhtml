@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Insert title here</title>
+</head>
+<h:body>
+	<ui:composition template="/templates/BasicTemplate.xhtml">
+		<ui:define name="content">
+			<div id="sectionHeader" class="grayBig">#{ticketBean.customer}
+				bookings</div>
+			<p:panel styleClass="text-center">
+				<h:form id="bookingForm">
+					<p:messages id="messages" showDetail="true" closable="true"
+						escape="false" />
+					<f:event type="preRenderView"
+						listener="#{messageBean.showConfirmation}" />
+
+
+					<p:selectBooleanButton id="actualBtn"
+						value="#{ticketBean.actualOnly}" onLabel="Actual tickets"
+						offLabel="All tickets" onIcon="ui-icon-locked"
+						offIcon="ui-icon-unlocked">
+						<p:ajax event="change" listener="#{ticketBean.refresh()}"
+							update=":bookingForm:bookingList" />
+					</p:selectBooleanButton>
+					<p:dataTable id="bookingList" var="ticket"
+						value="#{ticketBean.personalTickets}" rowKey="#{ticket.id}"
+						selection="#{ticketBean.selectedTickets}" selectionMode="multiple"
+						rowStyleClass="#{ticket.status==1 ? 'booked':(ticket.status==-1 ? 'cancelled':'')}"
+						scrollable="true" scrollHeight="200" styleClass="flightList">
+						<p:ajax event="rowSelectCheckbox"
+							listener="#{ticketBean.enableCancelButton}"
+							update=":bookingForm:bookingList, :bookingForm:dlgConfirm, :bookingForm:cancelBtn" />
+						<p:ajax event="rowUnselectCheckbox"
+							listener="#{ticketBean.enableCancelButton}"
+							update=":bookingForm:bookingList, :bookingForm:dlgConfirm, :bookingForm:cancelBtn" />
+						<p:ajax event="rowSelect"
+							listener="#{ticketBean.enableCancelButton}"
+							update=":bookingForm:bookingList, :bookingForm:dlgConfirm, :bookingForm:cancelBtn" />
+						<p:ajax event="rowUnselect"
+							listener="#{ticketBean.enableCancelButton}"
+							update=":bookingForm:bookingList, :bookingForm:dlgConfirm, :bookingForm:cancelBtn" />
+						<p:column style="width:4%; background-color:#529E44">
+							<p:rowToggler />
+						</p:column>
+						<p:column id="bookingCustomer" headerText="Passenger">
+						 #{ticket.name} 
+					</p:column>
+
+						<p:column id="timeLeft" headerText="Time to pay">
+							<h:outputText value="#{ticket.timeLeft}"></h:outputText>
+						</p:column>
+
+						<p:column id="bookingFlight" headerText="Flight">
+						 #{ticket.flight.flightNumber} 
+					</p:column>
+						<p:column id="bookingStatus" headerText="Status">
+						 #{ticket.detailedStatus} 
+					</p:column>
+						<p:rowExpansion>
+							<div id="ticketDetail" style="width: 400px; margin: auto;">
+								<span class="green"><b>#{ticket.flight.flightNumber}</b>
+								</span> <br /> <b>Passenger: </b>#{ticket.name}<br /> <b>From: </b>#{ticket.flight.departureAirport.name}
+								(#{ticket.flight.departureTimeF}) <br /> <b>To: </b>
+								#{ticket.flight.arrivalAirport.name}
+								(#{ticket.flight.arrivalTimeF}) <br /> <b>Price: </b>
+								$#{ticket.price}
+							</div>
+						</p:rowExpansion>
+					</p:dataTable>
+
+					<p:confirmDialog header="Confirm ticket cancellation:"
+						message="You are about to cancel #{ticketBean.selectedTickets.size()} tickets"
+						widgetVar="dlg" id="dlgConfirm" global="true" showEffect="fade"
+						hideEffect="explode">
+						<div class="text-center"> <p:commandButton value="Cancel" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" /><p:commandButton value="Ok" type="button"
+							styleClass="ui-confirmdialog-yes" icon="ui-icon-check">
+							<p:ajax event="click"
+								listener="#{ticketBean.cancelSelectedTickets()}"
+								oncomplete="PF('dlg').hide()" update=":bookingForm:bookingList" />
+						</p:commandButton>
+						
+							</div>
+					</p:confirmDialog>
+
+					<p:commandButton icon="ui-icon-arrowreturnthick-1-w"
+						action="/index" value="Exit" />
+					<p:commandButton id="cancelBtn"
+						disabled="#{ticketBean.disableCancelButton}" icon="ui-icon-trash"
+						value="Cancel selected bookings" onclick="PF('dlg').show()" />
+
+
+				</h:form>
+			</p:panel>
+
+
+		</ui:define>
+	</ui:composition>
+</h:body>
+
+</html>

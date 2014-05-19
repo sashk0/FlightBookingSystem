@@ -1,0 +1,110 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:body>
+	<ui:composition template="/templates/BasicTemplate.xhtml">		
+		<ui:define name="content">
+			<div id="sectionHeader" class="grayBig">Flight search</div>
+			<h:form id="buttonForm"><ui:include src="../forms/bookingCheckForm.xhtml"/> </h:form>
+			
+		<p:panel id="flightPanel" header="Flight: " styleClass="text-center"> 	
+		<h:form id="flightForm">
+		#{flightBean.reset()}
+		#{ticketBean.init()}
+			
+					 <p:autoComplete value="#{flightBean.fromAirport}" id="departureId"
+						completeMethod="#{flightBean.completeDepartures}" var="a"
+						itemLabel="#{a.name}" itemValue="#{a.id}"
+						converter="#{airportConverter}" queryDelay="1000"
+						forceSelection="true" dropdown="true" maxResults="10">
+					</p:autoComplete>
+					<p:watermark for="departureId" value="Departure: Any" />					 
+					<p:autoComplete value="#{flightBean.toAirport}" id="arrivalId"
+						completeMethod="#{flightBean.completeArrivals}" var="a"
+						itemLabel="#{a.name}" itemValue="#{a.id}"
+						converter="#{airportConverter}" queryDelay="1000"
+						forceSelection="true" maxResults="10" dropdown="true" style="margin-left: 35px">
+					</p:autoComplete>
+					<p:watermark for="arrivalId" value="Arrival: Any" />
+					<br />
+					<p:calendar id="depDay" value="#{flightBean.fromTime}" pattern="dd.MM.yyyy"
+						mode="popup" showOn="button" mindate="#{flightBean.today}">
+						<f:convertDateTime pattern="dd.MM.yyyy" />
+					</p:calendar>
+					<p:watermark for="depDay" value="Departure day: Any" />
+					<p:calendar id="returnDay" value="#{flightBean.toTime}" pattern="dd.MM.yyyy" mode="popup" showOn="button"
+				mindate="#{flightBean.departureTime}" disabled="true">
+					<f:convertDateTime pattern="dd.MM.yyyy" />
+				</p:calendar>
+				<p:watermark for="returnDay" value="Return date" />
+				<br />
+		Passengers #<p:spinner value="#{ticketBean.passengers}" immediate="true" id="ticketNumber" size="2"  min="1" label="Passengers">
+						 <p:ajax  update=":nextButtonForm:btnAdd"/> 
+						 </p:spinner>	
+		
+		 <p:commandButton value="Search" actionListener="#{flightBean.findFlight(ticketBean.passengers)}" 
+		 update=":searchResult, :searchResult:tableFlights, :nextButtonForm" icon="ui-icon-search"/> 
+		
+		 </h:form>
+		 </p:panel>
+		
+		<p:panel styleClass="text-center">
+		<h:form id="searchResult" style="display:#{flightBean.foundFlights==null ? 'none':'block'}">
+			<p:dataTable var="flight" styleClass="flightList" value="#{flightBean.foundFlights}" id="tableFlights"
+			selectionMode="single" selection="#{ticketBean.flight}" rowKey="#{flight.id}"
+			scrollable="true" scrollHeight="200" emptyMessage="No flights found!">
+				<p:ajax event="rowSelect" listener="#{flightBean.enableNextButton()}" update=":nextButtonForm:btnAdd, :searchResult:tableFlights">
+					<f:setPropertyActionListener target="#{flightBean.selectedFlight}" value="#{flight}" />		
+				</p:ajax>			 
+				 
+				<p:column headerText="From" styleClass="text-center" width="120">					
+							 <h:outputText value="#{flight.departureAirport.name}"/> 				
+				</p:column>
+				<p:column id="dTime" headerText="Departure time" styleClass="text-center" width="60">				 
+							<h:outputText  value="#{flight.departureTimeF}">
+							 
+							</h:outputText>				 
+				</p:column>	
+				<p:column headerText="To" styleClass="text-center" width="120">					
+							<h:outputText value="#{flight.arrivalAirport.name}" />					
+				</p:column>
+				<p:column headerText="Arrival time" styleClass="text-center"  width="60">				 
+							<h:outputText value=" #{flight.arrivalTimeF}">							
+							</h:outputText>				 
+				</p:column>	
+				<p:column headerText="Duration" styleClass="text-center"  width="60">				 
+							<h:outputText value=" #{flight.duration}"/>				 
+				</p:column>	
+			</p:dataTable> 		
+			<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />  		 
+		</h:form>
+		
+			<h:form id="nextButtonForm">
+			<p:commandButton icon="ui-icon-arrowreturnthick-1-w" action="/index" value ="Back"/>		 
+			<p:commandButton id="btnAdd" style="display:#{flightBean.disableNextBtn} ? 'none':'block'" icon="ui-icon-arrowthick-1-e" 
+			value ="Add #{ticketBean.passengers} tickets to basket" 
+			  actionListener="#{ticketBean.addTicketToBasket}" disabled="#{flightBean.disableNextBtn}" update=":customerBasket:basketTable, :customerBasket, :customerBasket:btnConfirm" >
+			  <p:ajax event="click"/>			 
+			</p:commandButton>	
+			</h:form>
+			<h:form id="customerBasket" style="display:#{ticketBean.ticketBasket.size()==0? 'none':'block'}">
+				<ui:include src="../pages/Basket.xhtml"/>
+				
+			<p:commandButton  id="btnConfirm" disabled="#{ticketBean.disableConfirmButton}" icon="ui-icon-arrowthick-1-e" value ="Confirm #{ticketBean.ticketBasket.size()} tickets" 
+			  		action="Confirmation.xhtml"/>	
+			  	
+			 </h:form>			 
+		</p:panel>		
+		 
+		</ui:define>
+		
+	</ui:composition>
+ 
+</h:body>
+
+</html>

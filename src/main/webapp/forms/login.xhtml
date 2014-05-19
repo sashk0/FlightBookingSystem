@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<body>
+	<ui:composition>
+
+		
+		<p:panel id="loginFrm"  toggleTitle="Sign in" header="Sign in" toggleable="true" toggleOrientation="vertical" rendered="#{!userController.logged}">				 
+					<h:form  id="loginForm">
+			<p:inputText value="#{userController.username}" id="username" validatorMessage="Enter username!">
+				<p:ajax update=":loginForm:loginBtn" event="keyup" listener="#{userController.enableLoginButton}" />
+			</p:inputText>
+				<br />  <p:watermark for="username" value="Username" />
+			<p:password value="#{userController.password}" id="password" validatorMessage="Enter password!">
+				<p:ajax update=":loginForm:loginBtn" event="keyup" listener="#{userController.enableLoginButton}" />
+			</p:password>
+				<br /><p:watermark for="password" value="Password" />
+				<p:commandButton id="loginBtn" value="Sign in" icon="ui-icon-key" action="#{userController.signIn()}" disabled="#{userController.disableLoginButton}" update=":loginForm"/>						
+		<p:messages id="messages" showDetail="true" closable="true" escape="false" />
+			</h:form>
+		</p:panel>
+		 
+		<h:form rendered="#{userController.logged}" id="logoutForm">
+		 <p:graphicImage url="https://cdn4.iconfinder.com/data/icons/eldorado-user/40/user-128.png" height="16" style="padding-bottom:5px; vertical-align: middle;"/><h:outputText value="#{userController.currentUser.username}" styleClass="grayBig"/>
+		 <span class="green">(#{userController.currentUser.roleDescription}) </span>
+		<p:commandButton icon="ui-icon-power" action="#{userController.signOut}" ajax="false"/></h:form>
+	</ui:composition>
+</body>
+</html>

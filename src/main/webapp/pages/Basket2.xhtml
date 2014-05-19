@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:body>
+	<ui:composition>
+		 
+			 
+				<p:dataTable id="basketTable" var="ticket"
+					value="#{ticketBean.ticketBasket}" editable="true" editMode="cell">
+					<p:ajax event="cellEdit" listener="#{ticketBean.onCellEdit}"
+						update=":basketTable" />
+					<f:facet name="header">Your tickets</f:facet> 
+					<p:column id="bName" headerText="Passenger">
+						<p:cellEditor>
+							<f:facet name="output">
+									<h:outputText value="#{ticket.name}"/>
+								</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{ticket.name}" label="Name" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column id="bDate" headerText="Booking Date">
+					 <h:outputText value="#{ticket.bookingDate}"/> 
+				</p:column>
+					<p:column id="bFlight" headerText="Flight">
+					 <h:outputText value="#{ticket.flight.flightNumber}"/> 		
+				</p:column>
+					<p:column id="bStatus" headerText="Status">
+		                <h:outputText value="#{ticket.detailedStatus}"/> 
+						</p:column>
+					<p:column id="bPrice" headerText="Price"> 
+		                <h:outputText value="$#{ticket.price}"/>  
+						</p:column>
+					<p:column style="width:18px">
+						<p:commandButton icon="ui-icon-trash" id="deleteButton"
+							style="display:inline"
+							actionListener="#{ticketBean.deleteFromBasket(ticket)}"
+							update=":basketTable">							 
+						</p:commandButton>
+					</p:column>
+					<f:facet name="footer"><h:outputText value="#{ticketBean.getBookingSum()}"/></f:facet>
+				</p:dataTable>	
+							
+				<p:commandButton id="btnConfirm" icon="ui-icon-arrowthick-1-e" value ="Confirm #{ticketBean.ticketBasket.size()} tickets" 
+			  		action="Confirmation.xhtml"/>	
+			  				  		
+		 
+	</ui:composition>
+
+</h:body>
+
+</html>

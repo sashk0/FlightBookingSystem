@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<head>
+ 
+<title>Insert title here</title>
+</head>
+<h:body>
+	<ui:composition template="/templates/BasicTemplate.xhtml">
+	#{customerBean.reset()}
+		<h2>Ticket booking confirmation</h2>		
+		<ui:define name="content">
+		<p:panel header="Your tickets">
+			<h:form id="customerBasket" style="display:#{ticketBean.ticketBasket.size()==0? 'none':'block'}">
+				 <ui:include src="Basket.xhtml"/>
+				 <p:commandButton rendered="false" id="btnConfirm" disabled="#{ticketBean.disableConfirmButton}" icon="ui-icon-arrowthick-1-e" value ="Confirm #{ticketBean.ticketBasket.size()} tickets" 
+			  		action="Confirmation.xhtml"/>	
+			 </h:form>
+		</p:panel>
+		<p:panel id="customerPanel" header="Enter your info">
+			<h:form id="customerForm">	
+					 <p:inputMask id="inPassport" value="#{customerBean.passport}"   mask="aa999999">
+						 <p:ajax update=":customerForm" event="blur" listener="#{customerBean.suggestCusomer}" />  
+					 </p:inputMask>
+					  <p:watermark for="inPassport" value="Passport #" />
+					<br/>
+					<p:inputText id="inName" value="#{customerBean.name}"> 
+						<p:ajax update=":btnForm:buyBtn" event="blur" listener="#{customerBean.enableBuyButton}" />
+					</p:inputText> <br/>
+					 <p:watermark for="inName" value="Name" />								
+					<p:inputText id="inSurname" value="#{customerBean.surname}"> 
+						<p:ajax update=":btnForm:buyBtn" event="blur" listener="#{customerBean.enableBuyButton}" />
+					</p:inputText>
+					<p:watermark for="inSurname" value="Surname" />
+					 <br/>					
+					<p:inputMask id="inPhone" value="#{customerBean.phone}" mask="+99 999 999-9999">
+						<p:ajax update=":btnForm:buyBtn" event="blur" listener="#{customerBean.enableBuyButton}" />
+					</p:inputMask>  
+					<p:watermark for="inPhone" value="Phone #" />					
+					<p:inputText id="inEmail" value="#{customerBean.email}" >   
+						 <f:validateRegex  pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />					 
+						 <p:ajax update=":btnForm:buyBtn" event="keyup" listener="#{customerBean.enableBuyButton}" />  
+					</p:inputText>
+					<p:watermark for="inEmail" value="Email address" /> 
+			</h:form>	 	 
+			<h:form id="btnForm">			 
+			
+			<p:commandButton icon="ui-icon-arrowreturnthick-1-w"   action="/pages/Customer" value ="Back"/>			
+			<p:commandButton icon="ui-icon-cart" id="buyBtn" disabled="#{customerBean.disableBuyBtn}" onclick="PF('dlg').show()" value ="Buy"/>			
+			
+			</h:form>
+			<p:messages id="messages" showDetail="true" closable="true" />
+			</p:panel>
+				<h:form>
+			<p:dialog  id="confDialog" global="true" showEffect="fade" styleClass="text-center"
+				hideEffect="explode" widgetVar="dlg" width="600" resizable="false" modal="true">		        
+		         <p:ajax event="close" listener="#{ticketBean.resetTerms()}" update="termsTick, buyBtn"/>		         
+		        <span class="grayBig">Terms &amp; Agreements</span>
+					<p:scrollPanel mode="native" style="width:100%;height:200px">
+					    <ui:include src="Terms.xhtml"></ui:include>
+					</p:scrollPanel>
+					
+					<p:selectBooleanCheckbox id="termsTick" value="#{ticketBean.termsAccepted}" itemLabel="I accept terms &#38; agreements"> 
+						<p:ajax event="change" update="buyBtn"/>
+					</p:selectBooleanCheckbox><br/>
+					
+					<p:commandButton id="buyBtn" icon="ui-icon-cart" value="Buy tickets" disabled="#{!ticketBean.termsAccepted}" actionListener="#{customerBean.addCustomer()}" 
+					action="#{ticketBean.bookTicket()}"  oncomplete="PF('dlg').hide();">
+					 	<f:setPropertyActionListener target="#{ticketBean.customer}" value="#{customerBean.currentCustomer}" />
+					 	<f:setPropertyActionListener target="#{messageBean.ticketBasket}" value="#{ticketBean.ticketBasket}"></f:setPropertyActionListener>					 	
+					 	 
+					</p:commandButton>	
+		    </p:dialog>
+		    </h:form>
+			
+		
+			
+		</ui:define>
+	</ui:composition>
+ 
+</h:body>
+
+</html>

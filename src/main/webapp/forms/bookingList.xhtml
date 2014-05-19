@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<body>
+	<ui:composition>
+
+
+		<p:messages id="messages" showDetail="true" closable="true"
+			escape="false" />
+		<f:event type="preRenderView"
+			listener="#{ticketBean.updateAllExpiredTickets}" />
+		<f:event type="preRenderView" listener="#{ticketBean.refresh()}" />
+		<p:panel>
+			<h:form id="bookingForm">
+				<p:dataTable id="bookingList" var="ticket" styleClass="flightList"
+					value="#{ticketBean.personalTickets}" rowKey="#{ticket.id}"
+					selection="#{ticketBean.selectedTickets}" sortBy="#{ticket.id}"
+					sortOrder="descending"
+					rowStyleClass="#{ticket.status==1 ? 'booked':(ticket.status==-1||ticket.status==-2 ? 'cancelled':'')}"
+					scrollable="true" scrollHeight="200">
+					<p:ajax event="rowSelectCheckbox"
+						listener="#{ticketBean.enableConfirmButton2}"
+						update=":bookingForm:bookingList, :formButtons:disableBtn2" />
+					<p:ajax event="rowUnselectCheckbox"
+						listener="#{ticketBean.enableConfirmButton2}"
+						update=":bookingForm:bookingList, :formButtons:disableBtn2" />
+					<p:ajax event="rowSelect"
+						listener="#{ticketBean.enableConfirmButton2}"
+						update=":bookingForm:bookingList, :formButtons:disableBtn2" />
+					<p:ajax event="rowUnselect"
+						listener="#{ticketBean.enableConfirmButton2}"
+						update=":bookingForm:bookingList, :formButtons:disableBtn2" />
+					<f:facet name="header">#{customerBean.selectedCustomer} bookings</f:facet>
+					<p:column id="bCustomer"
+						headerText="#{customerBean.selectedCustomer!=null ? 'Name' : 'Customer'}">
+					#{customerBean.selectedCustomer!=null ? ticket.name : ticket.customer}
+				</p:column>
+					<p:column id="bDate" headerText="Booking Date"
+						filterStyle="display:none">
+						<h:outputText value="#{ticket.bookingDate}">
+							<f:convertDateTime type="date" pattern="dd.MM.yyyy" />
+						</h:outputText>
+					</p:column>
+					<p:column id="timeLeft" headerText="Time to pay" sortBy="#{ticket.timeLeft}">
+							<h:outputText value="#{ticket.timeLeft}"></h:outputText>
+					</p:column>
+					<p:column id="bFlight" headerText="Flight">
+					#{ticket.flight.flightNumber} <br />(#{ticket.flight.departureTimeF})
+				</p:column>
+					<p:column id="bStatus" headerText="Status">
+					#{ticket.detailedStatus}
+				</p:column>
+					<p:column selectionMode="multiple" style="width:25px"
+						disabledSelection="#{ticket.status!=0 ? true : false} "
+						styleClass="#{ticket.status==1 ? 'booked':'pending'} #{ticket.status==-1||ticket.status==-2  ? 'cancelled' : null}" />
+				</p:dataTable>
+			</h:form>
+			<h:form id="formButtons" style="">
+				<p:commandButton icon="ui-icon-arrowreturnthick-1-w" action="/index"
+					value="Back" />
+				<p:selectBooleanButton id="actualBtn" style="top: -1px;"
+					value="#{ticketBean.actualOnly}" onLabel="Actual tickets"
+					offLabel="All tickets" onIcon="ui-icon-locked"
+					offIcon="ui-icon-unlocked">
+					<p:ajax event="change" listener="#{ticketBean.refresh()}"
+						update=":bookingForm:bookingList" />
+				</p:selectBooleanButton>
+				<p:commandButton id="disableBtn2"
+					disabled="#{ticketBean.disableConfirmButton2}" icon="ui-icon-check"
+					value="Confirm Selected" onclick="PF('dlg').show()">
+					 
+				</p:commandButton>
+				
+				<p:confirmDialog header="Are you sure?"
+						message="You are about to confirm #{ticketBean.selectedTickets.size()} tickets for #{ticketBean.customer}"
+						widgetVar="dlg" id="dlgConfirm" global="true" showEffect="fade"
+						hideEffect="explode">
+						<div class="text-center"> <p:commandButton value="Cancel" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+						<p:commandButton value="Ok" type="button"
+							styleClass="ui-confirmdialog-yes" icon="ui-icon-check">
+							<p:ajax event="click"
+								listener="#{ticketBean.confirmSelectedTickets}"
+								oncomplete="PF('dlg').hide()" update=":bookingForm:bookingList, :customerForm:customerList" />
+						</p:commandButton>						
+							</div>
+				 </p:confirmDialog>
+				
+			</h:form>
+		</p:panel>
+	</ui:composition>
+</body>
+</html>

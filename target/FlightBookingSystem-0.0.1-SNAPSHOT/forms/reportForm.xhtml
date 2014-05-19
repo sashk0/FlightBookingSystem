@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<body>
+	<ui:composition template="/templates/BasicTemplate.xhtml"> 
+						<ui:define name="content">
+					<h:form id="rangeForm"> 
+					<p:calendar value="#{reportBean.fromDate}" pattern="dd.MM.yyyy">
+						<p:ajax event="dateSelect" listener="#{reportBean.refreshList()}" update=":dataForm:reportByAirport,:dataForm:reportByPeriod" />
+					</p:calendar> 
+					<p:calendar value="#{reportBean.toDate}" pattern="dd.MM.yyyy">
+						<p:ajax event="dateSelect" listener="#{reportBean.refreshList()}" update=":dataForm:reportByAirport,:dataForm:reportByPeriod" />
+					</p:calendar> 
+					<p:commandButton id="showButton"
+					value="Show">
+						<p:ajax event="click" listener="#{reportBean.refreshList()}" update=":dataForm:reportByAirport,:dataForm:reportByPeriod" />
+						</p:commandButton>
+						</h:form>
+						<h:form id="dataForm">
+						<p:panel>
+					<p:dataTable id="reportByAirport" value="#{reportBean.reportByAirport}" var="reportC">
+									<f:facet name="header">
+										<h:outputText value="Report by destination (#{reportBean.fromDateF} — #{reportBean.toDateF})" />
+									</f:facet>
+									<p:column sortBy="#{reportC.arrivalCity}" headerText="City">
+										<h:outputText value="#{reportC.arrivalCity}" />
+									</p:column>
+									<p:column sortBy="#{reportC.total}" headerText="Amount">
+										<h:outputText value="#{reportC.total}" />
+									</p:column>
+									<p:column sortBy="#{reportC.sum}" headerText="Sum">
+										<h:outputText value="#{reportC.sum}" />
+									</p:column>
+									<f:facet name="footer">
+										<h:outputText value="#{reportBean.sumByAirport}" />
+									</f:facet>
+								</p:dataTable>
+								<p:dataTable id="reportByPeriod" value="#{reportBean.reportByDate}" var="reportD">
+								<f:facet name="header">
+									<h:outputText value="Report by period (#{reportBean.fromDateF} — #{reportBean.toDateF})" />
+								</f:facet>
+								<p:column sortBy="#{reportD.day}" headerText="Date">
+									<h:outputText value="#{reportD.day}" />
+								</p:column>
+								<p:column sortBy="#{reportD.total}" headerText="Amount">
+									<h:outputText value="#{reportD.total}" />
+								</p:column>
+								<p:column sortBy="#{reportD.sum}" headerText="Sum">
+									<h:outputText value="#{reportD.sum}" />
+								</p:column>
+								<f:facet name="footer">
+									<h:outputText value="#{reportBean.sumByDate}" />
+								</f:facet>
+							</p:dataTable><p:tabView id="tabView" onTabChange="#{reportBean.refreshList()}">
+
+						<p:tab id="tabTime" title="By date">
+
+							
+
+						</p:tab>
+						<p:tab id="tabDestination" title="By destination">
+							<h:form>
+								
+							</h:form>
+						</p:tab>
+					</p:tabView>
+					</p:panel>
+				</h:form>
+			</ui:define>
+	</ui:composition>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<body>
+
+	<ui:composition>
+		<h:form id="userForm">
+			<p:panel header="Add new user" collapsed="true" toggleable="true"
+				toggleOrientation="vertical">
+				 
+				<p:inputText value="#{userBean.username}" required="true"
+					requiredMessage="Enter username!" id="username">
+					<f:validateLength minimum="3" maximum="20" />
+					<p:ajax event="keyup" listener="#{userBean.enableAddButton()}"
+						update="addBtn" />
+				</p:inputText>
+				<p:watermark value="Username" for="username"/>
+				<br />
+				 
+				<p:password id="pwd1" value="#{userBean.password}" feedback="false"
+					match="pwd2" required="true" label="Password:"
+					promptLabel="Please enter password">
+					<p:ajax event="keyup" listener="#{userBean.enableAddButton()}"
+						update="addBtn" />
+				</p:password>
+				<p:watermark value="Password" for="pwd1"/>
+				<br />
+				 
+				<p:password id="pwd2" value="#{userBean.password}" feedback="false"
+					required="true" label="Confirm password:">
+					<p:ajax event="keyup" listener="#{userBean.enableAddButton()}"
+						update="addBtn" />
+				</p:password>
+				<p:watermark value="Confirm Password" for="pwd2"/>
+				<br />
+				<p:selectOneMenu value="#{userBean.roleId}" required="true">
+					<p:ajax event="change" listener="#{userBean.onSelect()}" />
+					<p:ajax event="change" listener="#{userBean.enableAddButton()}"
+						update="addBtn" />
+					<f:selectItems value="#{userBean.roleMap}" var="roles"
+						itemValue="#{roles}" />
+				</p:selectOneMenu>
+				<p:messages id="messages" showDetail="true" autoUpdate="true" />
+				<p:commandButton id="addBtn" value="Add"
+					disabled="#{userBean.disableAddBtn}">
+					<p:ajax event="click" listener="#{userBean.addUser()}"
+						update=":resultForm:userTable" />
+				</p:commandButton>
+			</p:panel>
+		</h:form>
+
+		<h:form id="resultForm">
+			<p:growl id="messages" showDetail="true" />
+			<p:panel id="userPanel">
+				<p:dataTable id="userTable" var="usr" value="#{userBean.userList}"
+					editable="true" rowKey="#{usr.id}"
+					scrollable="true" scrollHeight="250">
+					<p:ajax event="rowSelect" update=":resultForm:userTable" />
+					<f:facet name="header">  
+	            User management
+	        </f:facet>
+					<p:ajax event="rowEdit" listener="#{userBean.onEdit}"
+						update=":resultForm:userTable" />
+					<p:ajax event="rowEditCancel" listener="#{userBean.onCancel}"
+						update=":resultForm:userTable" />
+					<p:column headerText="Username" sortBy="username">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{usr.username}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{usr.username}" style="" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column headerText="Role" sortBy="roleId">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{userBean.getRoleFromStr(usr.roleId)}" />
+							</f:facet>
+							<f:facet name="input">
+								<h:inputText value="#{usr.roleId}" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					 
+					<p:column style="width:8px">
+						<p:rowEditor />
+
+					</p:column>
+					<p:column style="width:18px">
+						<p:commandButton icon="ui-icon-trash" id="deleteButton"
+							style="display:inline" oncomplete="cDialog.show()">
+							<f:setPropertyActionListener target="#{userBean.selectedUser}"
+								value="#{usr}" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+			</p:panel>
+			<p:confirmDialog header="Confirm delete"
+				message="You are about to delete #{userBean.selectedUser.username}"
+				widgetVar="cDialog" global="true" showEffect="fade"
+				hideEffect="explode">
+				<p:commandButton value="Delete" type="button"
+					styleClass="ui-confirmdialog-yes" icon="ui-icon-check">
+					<p:ajax event="click" listener="#{userBean.deleteSelectedUser()}"
+						oncomplete="cDialog.hide()"
+						update=":resultForm:userPanel, :resultForm:messages" />
+				</p:commandButton>
+				<p:commandButton value="Cancel" type="button"
+					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+			</p:confirmDialog>
+		</h:form>		 
+	</ui:composition>
+</body>
+</html>

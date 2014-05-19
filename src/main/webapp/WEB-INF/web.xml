@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://java.sun.com/xml/ns/javaee"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+         id="WebApp_ID" version="2.5">
+	<context-param>  
+	    <param-name>primefaces.THEME</param-name>  
+	    <param-value>smoothness</param-value>  
+	</context-param>  
+    <display-name>FlightBookingSystem</display-name>
+    
+   <!--
+		- Location of the XML file that defines the root application context.
+		- Applied by ContextLoaderListener.
+	-->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:spring/application-config.xml</param-value>
+    </context-param>
+
+    <welcome-file-list>
+        <welcome-file>index.xhtml</welcome-file>
+         <welcome-file>safe/admin.xhtml</welcome-file>
+    </welcome-file-list>
+    
+   
+
+    <!-- Spring listeners -->
+    <listener>
+        <listener-class> org.springframework.web.context.ContextLoaderListener </listener-class>
+    </listener>
+    <listener>
+        <listener-class> org.springframework.web.context.request.RequestContextListener</listener-class>
+    </listener>
+    
+    <!-- Start JSF -->
+    <servlet>
+        <servlet-name>Faces Servlet</servlet-name>
+        <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <!-- JSF URL mapping -->
+    <servlet-mapping>
+        <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>*.xhtml</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+    <servlet-name>Faces Servlet</servlet-name>
+    	<url-pattern>*.css.</url-pattern>
+	</servlet-mapping>
+	 
+	<!--  Login filter
+    <filter>
+        <filter-name>LoginFilter</filter-name>
+        <filter-class>info.oleksandr.www.beans.LoginFilter</filter-class>
+    </filter>
+    Set the login filter to secure all the pages in the /safe/* path of the application 
+    <filter-mapping>
+        <filter-name>LoginFilter</filter-name>
+        <url-pattern>/safe/*</url-pattern>
+    </filter-mapping>  -->
+    
+
+    
+	 
+    
+	
+</web-app>

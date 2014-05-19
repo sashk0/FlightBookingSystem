@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<body>
+	<ui:composition>
+		
+		<p:panel id="flightAddPanel" toggleSpeed="100" toggleTitle="Add new flight"  header="Add new flight" collapsed="false" toggleable="true" toggleOrientation="vertical">
+			<h:form id="flightAddForm" styleClass="text-center">
+			 
+			<p:inputText id="flightNumber" value="#{flightBean.flightNumber}"
+				label="Flight #" required="true">
+				<f:validateLength minimum="4" />
+			</p:inputText>
+			<p:watermark for="flightNumber" value="Flight #" />
+			<br />
+			
+			<p:autoComplete value="#{flightBean.departureAirport}"
+				id="departureId" completeMethod="#{airportBean.completeAirport}"
+				var="a" itemLabel="#{a.name}" itemValue="#{a.id}" required="true"
+				converter="#{airportConverter}" queryDelay="1000" 
+				forceSelection="true" dropdown="true" maxResults="5"				
+				minQueryLength="3" emptyMessage="No airports found!">
+				<p:column><span style="font-weight: bold">#{a.name}</span> (#{a.code})<br/><span>#{a.country}</span></p:column>
+				
+				<p:ajax event="itemSelect"
+					listener="#{flightBean.generateFlightNumber()}"
+					update="flightNumber, addBtn" />
+			</p:autoComplete>
+			
+			<p:watermark for="departureId" value="Departure Airport" />
+			<p:autoComplete value="#{flightBean.arrivalAirport}" id="arrivalId"
+				completeMethod="#{airportBean.completeAirport}" var="a"
+				itemLabel="#{a.name}" itemValue="#{a.id}" required="true"
+				converter="#{airportConverter}" queryDelay="1000"
+				forceSelection="true" dropdown="true"  maxResults="5" 
+				minQueryLength="3" emptyMessage="No airports found!"
+				style="margin-left: 35px" >
+				<p:ajax event="itemSelect"
+					listener="#{flightBean.generateFlightNumber()}"
+					update="flightNumber, addBtn" />
+			</p:autoComplete>
+			<p:watermark for="arrivalId" value="Arrival Airport" />
+			<br />
+			<p:calendar value="#{flightBean.departureTime}"
+				pattern="dd.MM.yyyy HH:mm" mode="popup" showOn="button"
+				mindate="#{flightBean.today}" id="depTime">
+				<p:ajax event="dateSelect"
+					listener="#{flightBean.suggestArrivalTime()}"
+					update="arrivalCalendar, flightNumber, addBtn" />
+					<p:ajax event="blur"
+					listener="#{flightBean.suggestArrivalTime()}"
+					update="arrivalCalendar, flightNumber, addBtn" />					
+			</p:calendar>
+			<p:watermark for="depTime" value="Departure Time" />
+
+			<p:calendar id="arrivalCalendar" value="#{flightBean.arrivalTime}"
+				pattern="dd.MM.yyyy HH:mm" mode="popup" showOn="button"
+				mindate="#{flightBean.departureTime}" />
+			<p:watermark for="arrivalCalendar" value="Arrival Time" />
+			<br></br>
+			Seats <p:spinner id="seatsAvailable"
+				value="#{flightBean.seatsAvailable}" size="3" min="10" />
+				<p:watermark for="seatsAvailable" value="Seats in plane" />
+			 Price <p:spinner id="seatPrice" value="#{flightBean.seatPrice}" 
+				prefix="$" min="10" size="5"  />
+			<br/><p:commandButton value="Add" icon="ui-icon-plus"
+				id="addBtn" disabled="#{flightBean.disableAddBtn}" action="#{flightBean.addFlight}" update=":formResult, addBtn" />
+			<p:messages id="messages" showDetail="true" closable="true" escape="false" />
+		</h:form></p:panel>
+	</ui:composition>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Insert title here</title>
+</head>
+<h:body>
+	<ui:composition template="/templates/BasicTemplate.xhtml">
+		<ui:define name="content">
+			<div id="sectionHeader" class="grayBig">Business analytic</div>
+			<ui:include src="../forms/login.xhtml" />
+			<p:panel>
+				<h:form id="rangeForm">
+					<p:calendar value="#{reportBean.fromDate}" pattern="dd.MM.yyyy">
+						<p:ajax event="dateSelect" listener="#{reportBean.refreshList()}"
+							update=":dataForm:tabView:reportByAirport,:dataForm:tabView:reportByPeriod" />
+					</p:calendar>
+					<p:calendar value="#{reportBean.toDate}" pattern="dd.MM.yyyy">
+						<p:ajax event="dateSelect" listener="#{reportBean.refreshList()}"
+							update=":dataForm:tabView:reportByAirport,:dataForm:tabView:reportByPeriod" />
+					</p:calendar>
+					<p:commandButton id="showButton" value="Show">
+						<p:ajax event="click" listener="#{reportBean.refreshList()}"
+							update=":dataForm:tabView:reportByAirport,:dataForm:tabView:reportByPeriod" />
+					</p:commandButton>
+				</h:form>
+				<h:form id="dataForm">
+
+
+					<p:tabView id="tabView" onTabChange="#{reportBean.refreshList()}">
+
+						<p:tab id="tabTime" title="By date">
+
+
+
+							<p:dataTable id="reportByPeriod" 
+								value="#{reportBean.reportByDate}" var="reportD" styleClass="flightList" scrollable="true" scrollHeight="200">
+								<f:facet name="header">
+									<h:outputText
+										value="Report by period (#{reportBean.fromDateF} — #{reportBean.toDateF})" />
+								</f:facet>
+								<p:column sortBy="#{reportD.day}" headerText="Date" styleClass="text-center">
+									<h:outputText value="#{reportD.day}" />
+								</p:column>
+								<p:column sortBy="#{reportD.total}" headerText="Amount" styleClass="text-center">
+									<h:outputText value="#{reportD.total}" />
+								</p:column>
+								<p:column sortBy="#{reportD.sum}" headerText="Sum" styleClass="text-center">
+									<h:outputText value="#{reportD.sum}" />
+								</p:column>
+								<f:facet name="footer">
+									<h:outputText value="#{reportBean.sumByDate}" />
+								</f:facet>
+							</p:dataTable>
+						</p:tab>
+						<p:tab id="tabDestination" title="By destination">
+
+							<p:dataTable id="reportByAirport"  styleClass="flightList" scrollable="true" scrollHeight="200"
+								value="#{reportBean.reportByAirport}" var="reportC">
+								<f:facet name="header">
+									<h:outputText
+										value="Report by destination (#{reportBean.fromDateF} — #{reportBean.toDateF})" />
+								</f:facet>
+								<p:column sortBy="#{reportC.arrivalCity}" headerText="City" styleClass="text-center">
+									<h:outputText value="#{reportC.arrivalCity}" />
+								</p:column>
+								<p:column sortBy="#{reportC.total}" headerText="Amount" styleClass="text-center">
+									<h:outputText value="#{reportC.total}" />
+								</p:column>
+								<p:column sortBy="#{reportC.sum}" headerText="Sum" styleClass="text-center">
+									<h:outputText value="#{reportC.sum}" />
+								</p:column>
+								<f:facet name="footer">
+									<h:outputText value="#{reportBean.sumByAirport}" />
+								</f:facet>
+							</p:dataTable>
+						</p:tab>
+					</p:tabView>
+
+				</h:form>
+				 
+			</p:panel>
+		</ui:define>
+
+	</ui:composition>
+
+</h:body>
+
+</html>

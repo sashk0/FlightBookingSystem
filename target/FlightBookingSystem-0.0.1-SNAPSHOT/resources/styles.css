@@ -1,0 +1,590 @@
+@CHARSET "UTF-8";
+
+body {	
+	 background-color: #595959;
+	 font-family: sans-serif;	 
+	 background-image: url(#{resource['images:carbon-fibre.png']});
+		
+}
+::-webkit-scrollbar {  
+	width: 12px;  /* for vertical scrollbars */
+  height: 12px; /* for horizontal scrollbars */
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(82, 158, 68, 1);
+}
+
+h2{
+	color:#595959;
+	padding-left:10px;
+}
+#sectionHeader{
+	position: fixed;
+	top: 18px;
+	left: 0px;
+	width: 100%;
+	text-align: center;	 
+	text-transform: uppercase;
+	font-weight: bold;
+	z-index:902;
+	
+}
+.firstButton{
+	position: absolute!important;
+	top: 200px;
+	margin: auto;
+	left: 300px;
+		-webkit-box-shadow: 0px 4px 15px 0px rgba(50, 50, 50, 0.9);
+	-moz-box-shadow:    0px 4px 15px 0px rgba(50, 50, 50, 0.9);
+	box-shadow:         0px 4px 15px 0px rgba(50, 50, 50, 0.9);
+	
+}
+#ticketDetail{
+	width: 400px;
+	margin: auto;
+	background-color: white;
+	padding: 10px;
+	border: 1px solid #CCC;
+	
+}
+.pending{
+	background: #FFC;
+	color:black;
+}
+
+
+
+}
+.grayBig{
+	color:#595959;	 
+	font-size: 20px;
+}
+
+h3 {
+	color:#595959;	 
+	font-size: 20px;
+}
+
+.green{
+	color:#529E44;
+}
+.passengerName{
+	color:#529E44;
+	font-weight: bold;
+}
+#header {
+	position: fixed;
+	width: 100%;
+	height:50px;
+	top: 0px;
+	left:0px;	 
+	background-color:#EDEBDF;
+	background-size: auto 50px;	 
+	display: block;
+	 background-color: #edebdf;
+	 padding: 5px 0px 5px 0px;
+	z-index:900;
+	-webkit-box-shadow: 0px 4px 15px 0px rgba(50, 50, 50, 0.9);
+	-moz-box-shadow:    0px 4px 15px 0px rgba(50, 50, 50, 0.9);
+	box-shadow:         0px 4px 15px 0px rgba(50, 50, 50, 0.9);
+	 	
+}
+
+
+#container{
+	width:100%;
+	
+	min-height:800px;
+	position: absolute;
+	top:55px;
+	
+	/*background-color: #529E44;*/
+ 	left: 0px;
+}
+
+#togglerCheck{
+	position:fixed;
+	top: 10px;
+	right:0px;
+	width: 310px; 
+	overflow: auto;
+	z-index: 902;
+	 
+}
+
+.redPassenger{
+	color:red;
+	font-weight:bold;
+	 
+}
+.text-center{
+	text-align: center!important;
+}
+#content {	 
+	width:840px; 
+	position: absolute;
+    top:0;
+    padding-top: 15px;
+    left: 0;
+    right: 0;
+    margin: auto;
+	background: #edebdf; /* Old browsers */
+	background: -moz-linear-gradient(top,  #edebdf 1%, #ffffff 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,#edebdf), color-stop(100%,#ffffff)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #edebdf 1%,#ffffff 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #edebdf 1%,#ffffff 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #edebdf 1%,#ffffff 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #edebdf 1%,#ffffff 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#edebdf', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
+	-webkit-box-shadow: 0px 4px 15px 0px rgba(50, 50, 50, 0.9);
+	-moz-box-shadow:    0px 4px 15px 0px rgba(50, 50, 50, 0.9);
+	box-shadow:         0px 4px 15px 0px rgba(50, 50, 50, 0.9);
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+	
+}
+
+#loginFrm {
+	width:250px;
+	text-align: center;
+	margin: auto;
+	z-index:901;
+}
+
+#flightAddPanel{
+	width:600px;
+	text-align: center;
+	margin: auto;
+}
+
+#userForm{
+	width:300px;
+	text-align: center;
+}
+#checkForm{
+	width:255px;
+	text-align: center;
+}
+#logoutForm{
+	position: fixed;
+	right: 0px;
+	top: 0px;
+	margin:9px;
+	margin-top: 5px;
+	background-color: #edebdf;
+	z-index:901;
+	padding: 5px;
+		-moz-border-radius:5px;
+	-webkit-border-radius:5px; */
+}
+#flightPanel{
+	width: 500px;
+	text-align: center;
+	margin: auto;	
+}
+#customerPanel{
+	width: 300px;
+	text-align: center;
+	margin: auto;
+}
+.ui-spinner
+{
+	margin-bottom: 7px!important;
+}
+
+/* DataTable selection styles*/
+.cancelled {
+	background-color: #FCC !important;
+	background-image: none !important;
+	color: #000000 !important;
+}
+
+.booked {
+	background-color: #CFC !important;
+	background-image: none !important;
+	color: #000000 !important;
+}
+
+td.booked .ui-chkbox{
+	display: none;
+}
+
+.ui-chkbox{
+	margin: 5px;
+}
+/*describing forms */
+ 
+
+/*----------STYLING DATA TABLES------------*/
+ .ui-datatable table{
+ 	  width: 99%;
+ 	  table-layout: auto;
+ }
+.ui-datatable-scrollable table{
+ 	  width: 99%!important;
+ 	  table-layout: auto!important;
+ 	  
+ }
+ 
+
+ 
+ .ui-datatable .ui-row-editor{
+    background-color: #529E44;
+    padding:5px;
+    width: 25px;
+	margin: auto;
+ 
+ 	-moz-border-radius:5px;
+	-webkit-border-radius:5px;
+	
+ } 
+ 
+ .ui-datatable-scrollable{
+	 margin-top: 10px!important;
+	 margin-bottom: 10px!important;
+ }
+ 
+.ui-datatable .ui-state-highlight{
+  background:  #fff!important;
+  color: #62bd51!important;
+  font-weight:bold!important;
+   border:2px solid #62bd51!important; 	 
+ }
+ .ui-datatable .ui-state-highlight .ui-row-editing{
+  background:  #fff!important;
+  color: #62bd51!important;
+  font-weight:bold!important;
+   border:2px solid #62bd51!important; 	 
+ }
+ 
+ .ui-datatable .ui-datatable-data tr.ui-state-hover{
+	background: #62bd51!important;
+	background-image: none !important;
+	color: #FFF !important;
+ }
+ .ui-datatable tbody td{
+	
+}
+ .ui-datatable-scrollable-header-box,  .ui-datatable-header-box{
+ 	background-color: #529E44!important;
+	color:white!important; 
+	font-size: 16px;
+	
+	margin-right: 0px!important;
+ 
+ }
+ 
+ .ui-datatable-header{
+ 	background-color: #529E44!important;
+	 color:white!important;
+ 	padding: 5px;
+	font-size: 16px;
+ }
+ 
+  .ui-datatable-scrollable-header-box .ui-column-title, .ui-datatable-header-box .ui-column-title{
+ 	color:white;
+ 
+ }
+ 
+ .ui-datatable .ui-datatable-footer {
+ 	 background-color: #529E44!important;
+ 	color:white!important;
+ 	padding: 5px;
+ }
+ 
+ .ui-datatable-odd{
+ background-color: #e2efda!important;
+ 
+ } 
+ .ui-datatable-even{ 
+  background-color: #fff!important;
+ }
+ /*Styling flight list data table*/
+ .ui-datatable.flightList .ui-datatable-data tr,
+.ui-datatable.flightList .ui-datatable-data-empty tr,
+.ui-datatable.flightList .ui-datatable-data td,
+.ui-datatable.flightList .ui-datatable-data-empty td {
+    border-style: none;
+    font-size: 14px;
+    padding: 8px 10px 8px 10px; 
+} 
+ 
+/* CUSTOMIZING PRIME FACES*/
+.ui-watermark{
+	color:gray;
+	font-weight: normal;
+}
+
+.ui-button{
+ background:#529E44!important;	 
+ border-style: none!important;
+/*  	-moz-border-radius:0px;
+	-webkit-border-radius:0px; */
+	 
+ 
+}
+.ui-button:hover{
+	background: #62bd51!important;
+}
+.ui-button-text{
+	 color: white;
+	 font-size: 14pt;
+	 text-transform: uppercase;
+	 line-height: 1!important;
+	 padding: 8px 14px 8px 30px!important;
+	 
+}
+
+.ui-fieldset-toggleable.myCheck .ui-fieldset-legend {
+	 background:#529E44!important;	 
+ 	border-style: none!important; 
+	 font-size: 14pt;
+	 text-transform: uppercase;
+	 line-height: 1!important;
+	  color: white!important;	
+	 
+} 
+.ui-fieldset-toggleable.myCheck .ui-fieldset-content{
+	 padding: 10px;
+	
+}
+.ui-fieldset-toggleable.myCheck .ui-fieldset-toggler{
+	margin-top: 0px!important;
+	
+}
+.ui-fieldset-toggleable.myCheck .ui-fieldset-legend:hover{
+	background: #62bd51!important;
+}
+.ui-fieldset.myCheck{ 
+	padding: 0px 0px 0px 0px;
+	text-align: center;
+}
+ 
+.ui-state-default {
+	bodrer-style:none!important;
+}
+.ui-widget {
+	font-size: 14px;
+	font-family: Arial, Helvetica, sans-serif;	
+	
+}
+.ui-widget-header, .ui-widget-header .ui-state-default {
+	 background: none !important;
+	 background-image: none!important;
+	 color:#529E44!important;
+	 border: none!important;
+	 font-weight: bold;
+	 text-transform:uppercase;
+	 border-top-left-radius: 5px;
+	 border-top-right-radius: 5px;
+ 
+ }
+.ui-widget-content{
+	border-style: none;
+	background: none;	 
+}
+.ui-panel .ui-panel-titlebar{
+	background-color: #529E44!important;
+	padding: 10px 10px 10px 10px!important;
+	color:#FFF!important;
+	margin: 5px 15px 5px 15px!important;
+	
+}
+
+.ui-tabs .ui-tabs-nav li{
+	border: 1px solid #CCC!important;
+	background: none!important
+}
+.ui-tabs.ui-tabs-top > .ui-tabs-nav{
+	padding: 0px!important;
+}
+.ui-tabs.ui-tabs-top > .ui-tabs-nav li{
+	top: 2px!important;
+}
+.ui-tabs .ui-tabs-panel {
+	padding: 0px!important;
+	border: 1px solid #CCC!important;
+}
+.ui-tabs .ui-tabs-nav li .ui-state-active{
+	border: 1px solid green!important;
+	background: none!important
+}
+.ui-state-active a{
+	background: #FFF!important;
+	color: #529E44!important;
+}
+
+.ui-datepicker{
+	background:white!important;	
+}
+.ui-datepicker td .ui-state-default{
+	border: none;
+	background: #FFFFFF;
+	margin:1px;
+}
+.ui-datepicker td .ui-state-highlight{
+	border: none;
+	 color:#529E44;
+	 font-weight:bold;
+	margin:1px;
+}
+.ui-selectonemenu-panel .ui-selectonemenu-list{
+	background: #fff;
+}
+
+.ui-selectonemenu .ui-selectonemenu-trigger{
+	background:#529E44!important;	 
+  border-style: none!important;
+}
+
+.ui-datepicker td .ui-state-default:hover{
+	border: 1px solid #CCC!important;
+	color: #529E44;
+	font-weight:bold;
+	margin:0px;
+}
+
+.ui-datepicker .ui-widget-header {
+	 color:#FFF!important;
+	  background: #529E44!important;
+}
+
+.ui-icon {
+	 background-image:url("#{resource['images:ui-icons-white.png']}")!important;
+}
+.ui-selectonemenu-label{
+ width: 100%!important;
+}
+.ui-inputfield{
+	padding: 8px!important;
+	-webkit-box-shadow: none!important;
+	-box-shadow: none!important;
+	margin:2px!important;
+	
+}
+.ui-widget-content .ui-inputfield{
+	text-align: center;
+}
+
+
+
+.ui-inputfield:hover{
+	border-width:2px;
+	border-color:  #529E44!important;
+	margin:1px!important;
+ 
+}
+.ui-inputfield:focus{
+	border-width:2px;
+	border-color:  #62bd51!important;	
+	margin:1px!important;
+}
+
+.ui-chkbox .ui-chkbox-box  {
+	background: #FFF!important;
+	border:2px solid #529E44;
+}
+
+.ui-chkbox-icon.ui-icon{
+	background-color:#529E44;
+}
+
+.ui-state-highlight, .ui-widget-content .ui-state-highlight {
+	background: #62bd51; /*Autocomplete highlight*/
+	color:#FFF;
+}
+
+.ui-corner-all{
+	/* -webkit-border-top-left-radius: 0px!important;
+	border-top-left-radius: 0px!important;
+		-webkit-border-bottom-right-radius: 0px!important;
+	border-bottom-right-radius: 0px!important; */
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+}
+
+.ui-autocomplete-panel .ui-autocomplete-list{
+	background-color: white;
+}
+
+.ui-autocomplete-query {
+	color:red!important;
+}
+
+.ui-autocomplete-panel .ui-autocomplete-table {
+	border-style: none!important;
+	background: white;	
+}
+.ui-autocomplete-panel .ui-autocomplete-table td{
+	cursor: pointer!important;
+	border: 1px solid #ccc!important;
+}
+.ui-slider{
+	border: 1px solid #CCC;
+}
+.ui-slider .ui-slider-handle{
+	background:#529E44;
+}
+
+.ui-timepicker-div dl{
+	padding-left: 10px;
+}
+
+.ui-dialog{
+	background: white;
+}
+
+.ui-dialog .ui-dialog-titlebar{
+	background:#529E44!important;
+}
+
+.ui-spinner-input{
+	text-align: center!important;
+	margin: 0px!important;
+	padding-right: 20px!important;
+}
+.ui-messages-info, .ui-message-info{
+ 
+	background-color: #FFF;
+	 
+}
+.ui-messages-info .ui-messages-close, .ui-message-info .ui-messages-close{
+	background: #3a87ad;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+	padding: 1px;
+	}
+	
+	
+.ui-messages-warn .ui-messages-close, .ui-messages-warn .ui-messages-close{
+	background: #c09853;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+	padding: 1px;
+	}
+	
+.ui-messages-error .ui-messages-close, .ui-messages-error .ui-messages-close{
+	background: #b94a48;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+	padding: 1px;
+}
+	 
+.ui-spinner-input:hover{	 
+	margin: 0px!important;
+	border-width:1px!important;
+}
+.ui-spinner-input:focus{	 
+	margin: 0px!important;
+	border-width:1px!important;
+}

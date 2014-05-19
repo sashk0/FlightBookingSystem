@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:body>
+	<ui:composition>	 
+			 
+			
+				<p:dataTable id="basketTable" var="ticket" scrollable="true" scrollHeight="150" style="width: 520px; margin: auto;"
+					styleClass="flightList" value="#{ticketBean.ticketBasket}" editable="true" editMode="cell">
+					<p:ajax event="cellEdit" listener="#{ticketBean.onCellEdit}"
+						update=":customerBasket:basketTable, :customerBasket:basketTable:bName, :customerBasket:btnConfirm" />
+					 
+					<p:column id="bName" headerText="Passenger" styleClass="text-center" >
+						<p:cellEditor>
+							<f:facet name="output">
+									<h:outputText styleClass="#{ticket.name=='' ? 'redPassenger':'passengerName'}" value="#{ticket.name=='' ? 'Enter name here': ticket.name}"/>
+									 
+								</f:facet>
+							<f:facet name="input" width="200">
+								<p:inputText value="#{ticket.name}" label="Name" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>					 
+					<p:column id="bFlight" headerText="Flight" width="70" styleClass="text-center">
+					 #{ticket.flight.flightNumber} 		
+				</p:column>
+					
+					<p:column id="bPrice" headerText="Price" width="50" styleClass="text-center"> 
+		                $#{ticket.price}  
+						</p:column>
+					<p:column width="25">
+						<p:commandButton icon="ui-icon-trash" id="deleteButton"
+							style="display:inline"
+							actionListener="#{ticketBean.deleteFromBasket(ticket)}"
+							update=":customerBasket:basketTable">							 
+						</p:commandButton>
+					</p:column>
+					<f:facet name="footer">#{ticketBean.getBookingSum()}</f:facet>
+				</p:dataTable>					
+				 
+			
+		 
+	</ui:composition>
+
+</h:body>
+
+</html>
